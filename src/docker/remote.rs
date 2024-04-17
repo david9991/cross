@@ -746,6 +746,7 @@ pub(crate) fn run(
         .specify_platform(&options.engine, &mut docker);
     docker.args(["--name", &container_id]);
     docker.arg("--rm");
+    docker.args(["--network", "host"]);
     docker.args(["-v", &volume.mount(mount_prefix)]);
 
     let mut volumes = vec![];
