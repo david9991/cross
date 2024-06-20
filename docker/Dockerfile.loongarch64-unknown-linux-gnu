@@ -47,3 +47,11 @@ ENV CARGO_TARGET_LOONGARCH64_UNKNOWN_LINUX_GNU_LINKER="$CROSS_TOOLCHAIN_PREFIX"g
 
 RUN mv $CROSS_SYSROOT/lib/* $CROSS_SYSROOT/lib64/
 RUN sed -e "s#@DEFAULT_QEMU_LD_PREFIX@#$QEMU_LD_PREFIX#g" -i /qemu-runner
+
+RUN git clone https://github.com/openssl/openssl.git
+ENV CROSS_COMPILE=loongarch64-unknown-linux-gnu-
+WORKDIR /openssl
+RUN ./Configure linux-generic64 --cross-compile-prefix=$CROSS_TOOLCHAIN_PREFIX \
+    --prefix=$CROSS_SYSROOT/usr --openssldir=/usr/sbin threads shared no-asm && \
+    make && make install && make clean
+ENV PKG_CONFIG_SYSROOT_DIR=$CROSS_SYSROOT
