@@ -949,7 +949,7 @@ pub(crate) fn run(
         "prefix=\"{mount_prefix}\"
 
 symlink_recurse() {{
-    for f in \"${{1}}\"/*; do
+    for f in $(find \"${{1}}\"/ -maxdepth 1 -mindepth 1); do
         dst=${{f#\"$prefix\"}}
         if [ -f \"${{dst}}\" ]; then
             echo \"invalid: got unexpected file at ${{dst}}\" 1>&2
