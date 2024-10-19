@@ -766,6 +766,8 @@ pub(crate) fn run(
     // Prevent `bin` from being mounted inside the Docker container.
     docker.args(["-v", &format!("{mount_prefix}/cargo/bin")]);
 
+    docker.args(["--network", "host"]);
+
     // When running inside NixOS or using Nix packaging we need to add the Nix
     // Store to the running container so it can load the needed binaries.
     if let Some(nix_store) = toolchain_dirs.nix_store() {
